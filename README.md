@@ -2,7 +2,7 @@
 
 [![License](https://img.shields.io/github/license/VerbalExpressions/JSVerbalExpressions.svg)](LICENSE)
 
-## JavaScript Regular Expressions made easy
+## TypeScript Regular Expressions made easy
 
 DenoVerbalExpressions is a TypeScript library for Deno that helps construct difficult regular expressions.
 
@@ -13,47 +13,30 @@ DenoVerbalExpressions is a TypeScript library for Deno that helps construct diff
 
 Import:
 
-```sh
-npm install verbal-expressions
+In `deps.ts`
+```ts
+export { 
+  Inputs, RegExpFlags, VerbalExpression, VerEx 
+} from "https://deno.land/x/verbalexpressions";
 ```
 
-Require:
+To use in your Deno app:
 
-```js
-const VerEx = require('verbal-expressions');
-```
-
-Or use ES6's `import`:
-
-```js
-import VerEx from 'verbal-expressions';
+```ts
+import {
+  Inputs, RegExpFlags, VerbalExpression, VerEx
+} from "./deps.ts";
 ```
 
 ## Running tests
 
 ```sh
-npm test
+sh run_tests.sh
 ```
-
-(or)
-
-```sh
-npm run test:verbose
-```
-
-## Creating a minified version
-
-```sh
-npm run build
-```
-
-This will run [Babel](https://babeljs.io) on `VerbalExpressions.js` and output the result to `dist/verbalexpressions.js`. A minified version of the same will also be written to `dist/verbalexpressions.min.js`.
-
-A source map will also be created in `dist`, so you can use the original "un-babelified", unminified source file for debugging purposes.
 
 ## API documentation
 
-You can find the API documentation at [verbalexpressions.github.io/JSVerbalExpressions](https://verbalexpressions.github.io/JSVerbalExpressions). You can find the source code for the docs in [`docs`](docs/).
+You can find the API documentation at [DenoVerbalExpressions](https://github.com/evosland/DenoVerbalExpressions). You can find the source code for the docs in [`docs`](docs/).
 
 ## Examples
 
@@ -61,25 +44,25 @@ Here are some simple examples to give an idea of how VerbalExpressions works:
 
 ### Testing if we have a valid URL
 
-```js
+```ts
 // Create an example of how to test for correctly formed URLs
 const tester = VerEx()
     .startOfLine()
-    .then('http')
-    .maybe('s')
-    .then('://')
-    .maybe('www.')
-    .anythingBut(' ')
+    .then("http")
+    .maybe("s")
+    .then("://")
+    .maybe("www.")
+    .anythingBut(" ")
     .endOfLine();
 
 // Create an example URL
-const testMe = 'https://www.google.com';
+const testMe = "https://www.google.com";
 
 // Use RegExp object's native test() function
 if (tester.test(testMe)) {
-    alert('We have a correct URL'); // This output will fire
+    console.log("We have a correct URL"); // This output will fire
 } else {
-    alert('The URL is incorrect');
+    console.log("The URL is incorrect");
 }
 
 console.log(tester); // Outputs the actual expression used: /^(http)(s)?(\:\/\/)(www\.)?([^\ ]*)$/
@@ -87,27 +70,27 @@ console.log(tester); // Outputs the actual expression used: /^(http)(s)?(\:\/\/)
 
 ### Replacing strings
 
-```js
+```ts
 // Create a test string
-const replaceMe = 'Replace bird with a duck';
+const replaceMe = "Replace bird with a duck";
 
 // Create an expression that seeks for word "bird"
-const expression = VerEx().find('bird');
+const expression = VerEx().find("bird");
 
 // Execute the expression like a normal RegExp object
-const result = expression.replace(replaceMe, 'duck');
+const result = expression.replace(replaceMe, "duck");
 
 // Outputs "Replace duck with a duck"
-alert(result);
+console.log(result);
 ```
 
 ### Shorthand for string replace
 
-```js
-const result = VerEx().find('red').replace('We have a red house', 'blue');
+```ts
+const result = VerEx().find("red").replace("We have a red house", "blue");
 
 // Outputs "We have a blue house"
-alert(result);
+console.log(result);
 ```
 
 ## Contributions
@@ -117,12 +100,12 @@ Pull requests are warmly welcome!
 Clone the repo and fork:
 
 ```sh
-git clone https://github.com/VerbalExpressions/JSVerbalExpressions.git
+git clone https://github.com/evosland/DenoVerbalExpressions.git
 ```
 
 ### Style guide
 
-The [Airbnb](https://github.com/airbnb/javascript) style guide is loosely used as a basis for creating clean and readable JavaScript code. Check [`.eslintrc`](.eslintrc).
+The [TypeScript Style Guide](https://github.com/basarat/typescript-book/blob/master/docs/styleguide/styleguide.md) style guide is loosely used as a basis for creating clean and readable TypeScript code. Check [`tslint`](https://palantir.github.io/tslint/).
 
 Check out these slide decks for handy Github & git tips:
 
@@ -132,12 +115,13 @@ Check out these slide decks for handy Github & git tips:
 ## Tools
 
 - https://verbalregex.com - it's a wrapper of JSVerbalExpressions; users can write down the code and compile to regex
-- https://jsbin.com/metukuzowi/edit?js,console - JSBin Playground
+- [TypeScript Playground](https://www.typescriptlang.org/play/#src=function%20isDateBoolean(obj%3A%20any)%3A%20boolean%20%7B%0D%0A%20%20%20%20return%20typeof%20obj%20%3D%3D%3D%20'object'%20%26%26%20'toISOString'%20in%20obj%3B%0D%0A%7D%0D%0A%0D%0Afunction%20isDateCast(obj%3A%20any)%3A%20obj%20is%20Date%20%7B%0D%0A%20%20%20%20return%20typeof%20obj%20%3D%3D%3D%20'object'%20%26%26%20'toISOString'%20in%20obj%3B%0D%0A%7D%0D%0A%0D%0Afunction%20getUnknownData()%3A%20any%20%7B%0D%0A%20%20%20%20return%20new%20Date()%3B%0D%0A%7D%0D%0A%0D%0Afunction%20test1()%20%7B%0D%0A%20%20%20%20var%20d%20%3D%20getUnknownData()%3B%0D%0A%20%20%20%20if%20(isDateBoolean(d))%20%7B%0D%0A%20%20%20%20%20%20%20%20console.log(d.toISOString())%3B%0D%0A%20%20%20%20%20%20%20%20console.log(d.toIsoString())%3B%0D%0A%20%20%20%20%7D%0D%0A%7D%0D%0A%0D%0Afunction%20test2()%20%7B%0D%0A%20%20%20%20var%20d%20%3D%20getUnknownData()%3B%0D%0A%20%20%20%20if%20(isDateCast(d))%20%7B%0D%0A%20%20%20%20%20%20%20%20console.log(d.toISOString())%3B%0D%0A%20%20%20%20%20%20%20%20console.log(d.toIsoString())%3B%0D%0A%20%20%20%20%7D%0D%0A%7D) - TS Playground
 
 ## Other Implementations
 
 You can see an up to date list of all ports on [VerbalExpressions.github.io](https://VerbalExpressions.github.io).
 
+- [JavaScript](https://github.com/verbalexpressions/jsverbalexpressions)
 - [Ruby](https://github.com/ryan-endacott/verbal_expressions)
 - [C#](https://github.com/VerbalExpressions/CSharpVerbalExpressions)
 - [Python](https://github.com/VerbalExpressions/PythonVerbalExpressions)
